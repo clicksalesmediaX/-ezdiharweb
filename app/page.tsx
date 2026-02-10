@@ -228,20 +228,20 @@ const Hero = () => {
             🚀 انطلق بمشروعك في 48 ساعة فقط
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
-            السيطرة على السوق السعودي <br className="hidden md:block" />
+            نمو أعمالك لا يحتاج ميزانيات ضخمة.. <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CC95] to-[#00CC6C]">
-              أصبحت آلية بالكامل.
+              احصل على نتائج احترافية بأسعار تنافسية.
             </span>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            نقوم ببناء مواقع عالية التحويل، توثيق خرائط جوجل، وإطلاق حملاتك الإعلانية أسرع من أي وكالة في المملكة. بدون اجتماعات، وبدون تأخير.
+            في إزدهار ويب، نحطم قاعدة "الغالي ثمنه فيه". نقدم لك خدمات تسويقية احترافية (مواقع، متاجر، وإعلانات جوجل) بجودة عالمية وأسعار تنافسية، مصممة خصيصاً لتحويل كل ريال تدفعه إلى أرباح حقيقية.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a href="https://wa.me/966XXXXXXXXX" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
               <span className="relative z-10 flex items-center gap-2">
                 <WhatsAppIcon className="w-5 h-5" />
-                ابدأ الآن عبر واتساب
+                ابدأ نمو أعمالك الآن
               </span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </a>
