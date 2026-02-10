@@ -21,7 +21,13 @@ import {
   Stethoscope,
   Building,
   Coffee,
-  ShoppingCart
+  ShoppingCart,
+  DollarSign,
+  BarChart3,
+  Rocket,
+  Cpu,
+  Headphones,
+  Users
 } from 'lucide-react';
 
 // WhatsApp Brand Icon
@@ -351,25 +357,40 @@ const Features = () => {
     <section id="features" className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">لماذا تثق بنا الشركات في الرياض وجدة؟</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">لماذا نحن خيارك الأمثل للنمو؟</h2>
           <p className="text-slate-500 max-w-xl mx-auto">الوكالات التقليدية بطيئة ومكلفة. نحن نستخدم الأتمتة لتقديم نتائج متميزة بتكلفة أقل وسرعة خيالية.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" dir="rtl">
           <FeatureCard
-            icon={Zap}
-            title="تسليم سريع كالبرق"
-            description="لا نقضي شهوراً في البرمجة. تقنياتنا المؤتمتة تجعل موقعك الاحترافي جاهزاً خلال أقل من 48 ساعة."
+            icon={DollarSign}
+            title="التكلفة الاقتصادية الذكية"
+            description="جودة احترافية بسعر لا يُنافس. صممنا باقاتنا لتناسب الشركات الناشئة والمتوسطة في السعودية والخليج، لتصل إلى جمهورك وتنافس الكبار دون الحاجة لميزانيات ضخمة."
           />
           <FeatureCard
-            icon={Smartphone}
-            title="مصمم للجوال أولاً"
-            description="95% من العملاء في السعودية يستخدمون الجوال. تصاميمنا مبنية خصيصاً لتجربة تصفح سلسة وسريعة على الهواتف."
+            icon={TrendingUp} // Using TrendingUp as BarChart/Revenue alternative or could use BarChart3
+            title="التركيز المطلق على العائد (Revenue)"
+            description="مبيعات أكثر، وليس مجرد تصميم. كل صفحة نهبط عليها وكل إعلان نطلقه هدفه واحد فقط: زيادة عدد عملائك ورفع حجم مبيعاتك من اليوم الأول."
           />
           <FeatureCard
-            icon={MapPin}
-            title="هيمنة محلية"
-            description="نقوم بتحسين ظهورك خصيصاً في بحث خرائط جوجل في مدينتك، مما يجلب لك زواراً حقيقيين لمقرك."
+            icon={Rocket}
+            title="سرعة التنفيذ والدقة"
+            description="انطلق إلى السوق في وقت قياسي. نحن نعلم أن الوقت هو المال. نلتزم بتسليم المتاجر والمواقع وحملات Google Ads بسرعة فائقة مع الحفاظ على أدق التفاصيل التقنية."
+          />
+          <FeatureCard
+            icon={Users}
+            title="خبرة في السوق الخليجي"
+            description="نفهم جمهورك المحلي. لدينا خبرة عميقة في سلوك المستهلك السعودي والخليجي، مما يضمن أن تكون تصاميمنا وحملاتنا متوافقة مع ذوق واهتمامات عملائك المستهدفين."
+          />
+          <FeatureCard
+            icon={Cpu}
+            title="تقنيات حديثة لأداء فائق"
+            description="مواقع سريعة، ذكية، وقابلة للتوسع. لا نستخدم القوالب الجاهزة والبطيئة؛ بل نعتمد على أحدث التقنيات (مثل Next.js و Python) لضمان سرعة فائقة لموقعك، مما يحسن من تجربة المستخدم ويرفع ترتيبك في محركات البحث تلقائياً."
+          />
+          <FeatureCard
+            icon={Headphones}
+            title="دعم فني وتطوير مستمر"
+            description="لسنا مجرد منفذين، نحن شركاء نجاح. علاقتنا معك لا تنتهي بتسليم المشروع. نوفر لك دعماً فنياً مستمراً وتحديثات دورية تضمن بقاء منصتك الرقمية تعمل بكفاءة 100%، مع تقديم استشارات دورية لتحسين الأداء وزيادة المبيعات."
           />
         </div>
       </div>
