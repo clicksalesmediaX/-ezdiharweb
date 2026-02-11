@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Lock, Eye, FileText, Users, Globe } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function PrivacyPolicyPage() {
     const sections = [
@@ -65,11 +66,8 @@ export default function PrivacyPolicyPage() {
             {/* Navigation */}
             <nav className="bg-white border-b border-slate-100 sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00CC95] to-[#00CC6C] flex items-center justify-center text-white font-bold">
-                            إ
-                        </div>
-                        <span className="font-bold text-xl tracking-tight text-slate-800">إزدهار<span className="text-[#00CC95]"> ويب</span></span>
+                    <Link href="/" className="flex items-center">
+                        <Image src="/ezdihar.png" alt="إزدهار ويب" width={120} height={36} className="h-9 w-auto" />
                     </Link>
                     <Link
                         href="/"
