@@ -60,11 +60,11 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">لماذا نحن؟</a>
           <a href="#portfolio" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">أعمالنا</a>
-          <a href="#packages" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">الباقات</a>
           <a href="#testimonials" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">النتائج</a>
-          <button className="bg-slate-900 text-white px-5 py-2 rounded-full font-medium hover:bg-slate-800 transition-colors">
-            دخول العملاء
-          </button>
+          <a href="https://wa.me/966XXXXXXXXX" className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
+            <WhatsAppIcon className="w-5 h-5" />
+            ابدأ الآن فقط ب 1,190 ر.س
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -113,8 +113,7 @@ const Navbar = () => {
                 {[
                   { href: '#features', label: 'لماذا نحن؟', delay: 0.1 },
                   { href: '#portfolio', label: 'أعمالنا', delay: 0.15 },
-                  { href: '#packages', label: 'الباقات', delay: 0.2 },
-                  { href: '#testimonials', label: 'النتائج', delay: 0.25 },
+                  { href: '#testimonials', label: 'النتائج', delay: 0.2 },
                 ].map((item) => (
                   <motion.a
                     key={item.href}
@@ -281,6 +280,7 @@ const Hero = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="bg-slate-900 text-white rounded-full py-3 px-6 md:px-8 flex flex-col md:flex-row justify-between items-center mb-10 shadow-lg gap-3"
+          id="packages"
         >
           <h2 className="text-lg md:text-xl font-bold tracking-wide">باقة استراتيجية النمو</h2>
           <div className="bg-[#00CC95] text-white rounded-full py-1.5 px-6 border-2 border-white font-extrabold text-sm">
@@ -899,9 +899,7 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-white mb-4">الخدمات</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-[#00CC95]">إعداد خرائط جوجل</a></li>
-              <li><a href="#" className="hover:text-[#00CC95]">صفحات الهبوط</a></li>
-              <li><a href="#" className="hover:text-[#00CC95]">السيو المحلي (Local SEO)</a></li>
+              <li><a href="#packages" className="hover:text-[#00CC95]">باقة استراتيجية النمو</a></li>
             </ul>
           </div>
           <div>
