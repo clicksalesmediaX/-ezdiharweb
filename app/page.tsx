@@ -160,6 +160,40 @@ const Navbar = () => {
   );
 };
 
+const ServiceCard = ({ number, title, items, sidebarColor, sidebarIcon, sidebarLabel, badge, delay }: {
+  number: string; title: string; items: { bold: string; text: string }[]; sidebarColor: string; sidebarIcon: React.ReactNode; sidebarLabel: string; badge?: string; delay: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay }}
+    whileHover={{ y: -4 }}
+    className="bg-white border border-slate-100 flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all"
+  >
+    <div className={`w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs relative ${sidebarColor}`}>
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-slate-800 text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">
+        {number}
+      </div>
+      {sidebarIcon}
+      <span className="mt-2">{sidebarLabel}</span>
+    </div>
+    <div className="p-5 flex-1">
+      <div className="flex justify-between items-start mb-3">
+        <h3 className="font-bold text-slate-900 text-lg">{title}</h3>
+        {badge && (
+          <span className="bg-[#00CC95]/10 text-[#00CC95] text-[10px] px-2.5 py-1 rounded-full font-bold whitespace-nowrap">{badge}</span>
+        )}
+      </div>
+      <ul className="text-[13px] space-y-2 text-slate-600 list-disc mr-5 leading-relaxed">
+        {items.map((item, i) => (
+          <li key={i}><span className="font-bold text-slate-800">{item.bold}</span> {item.text}</li>
+        ))}
+      </ul>
+    </div>
+  </motion.div>
+);
+
 const Hero = () => {
   const [beams, setBeams] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([]);
 
@@ -180,7 +214,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
+    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-slate-50">
       {/* Animated Grid Background */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -224,26 +258,162 @@ const Hero = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-100/30 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Hero Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-14"
         >
           <span className="inline-block py-1 px-3 rounded-full bg-[#00CC95]/10 text-[#00CC95] font-semibold text-sm mb-6 border border-[#00CC95]/20 backdrop-blur-sm">
-            🚀 انطلق بمشروعك في 48 ساعة فقط
+            🚀 باقة النمو الرقمي المتكاملة
           </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
             نمو أعمالك لا يحتاج ميزانيات ضخمة.. <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CC95] to-[#00CC6C]">
               احصل على نتائج احترافية بأسعار تنافسية.
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            في إزدهار ويب، نحطم قاعدة "الغالي ثمنه فيه". نقدم لك خدمات تسويقية احترافية (مواقع، متاجر، وإعلانات جوجل) بجودة عالمية وأسعار تنافسية، مصممة خصيصاً لتحويل كل ريال تدفعه إلى أرباح حقيقية.
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            في إزدهار ويب، نحطم قاعدة &quot;الغالي ثمنه فيه&quot;. نقدم لك خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية، مصممة خصيصاً لتحويل كل ريال تدفعه إلى أرباح حقيقية.
           </p>
+        </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* Growth Strategy Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-slate-900 text-white rounded-full py-3 px-6 md:px-8 flex flex-col md:flex-row justify-between items-center mb-10 shadow-lg gap-3"
+        >
+          <h2 className="text-lg md:text-xl font-bold tracking-wide">باقة استراتيجية النمو</h2>
+          <div className="bg-[#00CC95] text-white rounded-full py-1.5 px-6 border-2 border-white font-extrabold text-sm">
+            فقط <span className="text-xl">1,100</span> ريال / شهرياً
+          </div>
+          <h2 className="text-lg md:text-xl font-bold hidden md:block">Growth Strategy Package</h2>
+        </motion.div>
+
+        {/* Service Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+          <ServiceCard
+            number="١"
+            title="هوية رقمية عالية الأداء"
+            sidebarColor="bg-slate-800"
+            sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
+            sidebarLabel="الهوية"
+            items={[
+              { bold: "العلامة التجارية الاحترافية:", text: "تصميم الشعار، بطاقات العمل، والأوراق الرسمية." },
+              { bold: "موقع إلكتروني سريع:", text: "موقع حديث وفائق السرعة مع صفحات ومنتجات غير محدودة." },
+              { bold: "صفحة هبوط بيعية:", text: "صفحة مخصصة لتحويل الزيارات إلى عملاء محتملين فوراً." },
+              { bold: "استضافة مجانية مدى الحياة:", text: "نوفر خادماً مداراً لموقعك بدون فواتير شهرية." },
+            ]}
+            delay={0.1}
+          />
+
+          <ServiceCard
+            number="٢"
+            title="محتوى التواصل الاجتماعي"
+            sidebarColor="bg-[#00CC95]"
+            sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" /></svg>}
+            sidebarLabel="التواصل"
+            badge="١٥ منتجاً شهرياً"
+            items={[
+              { bold: "6 منشورات جرافيك:", text: "للتوعية بالعلامة التجارية والتعليم." },
+              { bold: "6 قصص (Stories) تفاعلية:", text: "لزيادة التفاعل والمبيعات." },
+              { bold: "3 فيديوهات ريلز سينمائية:", text: "محتوى فيديو للوصول إلى أقصى انتشار." },
+              { bold: "إدارة كاملة للحسابات:", text: "نشر يومي وجدولة احترافية وتفاعل استراتيجي." },
+            ]}
+            delay={0.2}
+          />
+
+          <ServiceCard
+            number="٣"
+            title="السيطرة على محركات البحث"
+            sidebarColor="bg-amber-500"
+            sidebarIcon={<span className="text-4xl font-bold opacity-90">G</span>}
+            sidebarLabel="البحث"
+            items={[
+              { bold: "ملف جوجل التجاري (GMB):", text: "إعداد كامل وتحسين شهري لتصدر نتائج الخرائط." },
+              { bold: "أرشفة البحث:", text: "الربط مع Google Search Console لضمان ظهور موقعك." },
+            ]}
+            delay={0.3}
+          />
+
+          <ServiceCard
+            number="٤"
+            title="التسويق عبر الأداء (الإعلانات)"
+            sidebarColor="bg-rose-500"
+            sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
+            sidebarLabel="الإعلانات"
+            items={[
+              { bold: "إدارة منصات متعددة:", text: "سناب شات، إنستغرام، وفيسبوك." },
+              { bold: "إدارة إعلانات البحث:", text: "حملات Google Ads لاستهداف الباحثين عن خدماتك." },
+              { bold: "استهداف متقدم:", text: "حسب المدينة، الحي، العمر، والاهتمامات." },
+              { bold: "كتابة محتوى محلي:", text: "صياغة إعلانية باللهجة السعودية واللغة الإنجليزية." },
+            ]}
+            delay={0.4}
+          />
+        </div>
+
+        {/* AI & Automation Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-slate-900 text-white rounded-full py-3 px-6 md:px-8 flex flex-col md:flex-row justify-between items-center mb-10 shadow-lg gap-3"
+        >
+          <h2 className="text-xl font-bold tracking-wide">الذكاء الاصطناعي والمستقبل</h2>
+          <div className="px-8 font-bold text-sm tracking-widest opacity-30 italic hidden md:block">ركن الابتكار</div>
+          <h2 className="text-xl font-bold hidden md:block">AI & Automation</h2>
+        </motion.div>
+
+        {/* AI Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          whileHover={{ y: -4 }}
+          className="bg-white border border-[#00CC95]/20 flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all mb-12"
+        >
+          <div className="w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs bg-gradient-to-b from-[#00CC95] to-emerald-700 relative">
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">٥</div>
+            <svg className="w-10 h-10 mb-2 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            الابتكار
+          </div>
+          <div className="p-6 flex-1 flex flex-col md:flex-row gap-8">
+            <div className="flex-1">
+              <h3 className="font-bold text-slate-900 text-xl mb-3 flex items-center gap-2">
+                الذكاء الاصطناعي والأتمتة
+              </h3>
+              <ul className="text-[14px] space-y-3 text-slate-600 list-disc mr-5 leading-relaxed">
+                <li><span className="font-bold text-slate-800">عميل ذكاء اصطناعي للموقع 24/7:</span> شات بوت ذكي للرد على العملاء وجمع البيانات فوراً.</li>
+                <li><span className="font-bold text-slate-800">التكامل مع واتساب:</span> أزرار &quot;انقر للدردشة&quot; عبر كامل حضورك الرقمي.</li>
+              </ul>
+            </div>
+            <div className="flex-1 border-t md:border-t-0 md:border-r border-slate-100 pt-4 md:pt-0 md:pr-8">
+              <div className="bg-[#00CC95]/10 p-4 rounded-xl">
+                <h4 className="font-bold text-slate-900 text-sm mb-2">تقارير مباشرة</h4>
+                <p className="text-slate-700 text-[13px] leading-relaxed">
+                  <span className="font-bold text-slate-900">لوحة تحكم فورية (Live ROI Dashboard):</span> رابط مباشر لتتبع النقرات والنتائج والنمو في الوقت الفعلي.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center"
+        >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
             <a href="https://wa.me/966XXXXXXXXX" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
               <span className="relative z-10 flex items-center gap-2">
                 <WhatsAppIcon className="w-5 h-5" />
@@ -251,12 +421,12 @@ const Hero = () => {
               </span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </a>
-            <a href="#packages" className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-slate-700 font-bold text-lg border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-              تصفح الباقات
+            <a href="#portfolio" className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-slate-700 font-bold text-lg border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+              شاهد أعمالنا
             </a>
           </div>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm font-semibold text-slate-400">
+          <div className="flex flex-wrap justify-center gap-8 text-sm font-semibold text-slate-400">
             <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> +50 عميل في السعودية</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> تقييم 4.9/5</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> ضمان الرضا 100%</div>
@@ -546,372 +716,6 @@ const Portfolio = () => {
   );
 };
 
-const PricingCard = ({
-  title,
-  price,
-  description,
-  features,
-  recommended = false,
-  delay
-}: {
-  title: string,
-  price: string,
-  description: string,
-  features: string[],
-  recommended?: boolean,
-  delay: number
-}) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: delay * 0.2 }}
-      className={`relative rounded-3xl p-8 ${recommended
-        ? 'bg-slate-900 text-white shadow-2xl scale-105 border-2 border-[#00CC95]'
-        : 'bg-white text-slate-900 border border-slate-200 shadow-lg'}`}
-    >
-      {recommended && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg whitespace-nowrap">
-          الأكثر طلباً
-        </div>
-      )}
-
-      <h3 className={`text-xl font-bold mb-2 ${recommended ? 'text-white' : 'text-slate-900'}`}>{title}</h3>
-      <div className="flex items-baseline gap-1 mb-4 flex-row-reverse justify-end">
-        {/* Currency formatting flipped for RTL usually handled by flex-row-reverse or manual order */}
-        <span className="text-sm font-medium opacity-70">/مرة واحدة</span>
-        <span className={`text-4xl font-extrabold mx-1 ${recommended ? 'text-[#00CC95]' : 'text-slate-900'}`}>{price}</span>
-        <span className="text-sm font-medium opacity-70">ريال</span>
-      </div>
-      <p className={`text-sm mb-8 ${recommended ? 'text-slate-400' : 'text-slate-500'}`}>{description}</p>
-
-      <div className="space-y-4 mb-8">
-        {features.map((feature, idx) => (
-          <div key={idx} className="flex items-start gap-3">
-            <CheckCircle2 className={`w-5 h-5 flex-shrink-0 ${recommended ? 'text-[#00CC95]' : 'text-[#00CC95]'}`} />
-            <span className={`text-sm ${recommended ? 'text-slate-300' : 'text-slate-600'}`}>{feature}</span>
-          </div>
-        ))}
-      </div>
-
-      <button className={`w-full py-3 rounded-xl font-bold transition-all ${recommended
-        ? 'bg-gradient-to-r from-[#00CC95] to-[#00CC6C] hover:shadow-lg hover:shadow-[#00CC95]/25 text-white'
-        : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-        }`}>
-        اختر الباقة
-      </button>
-    </motion.div>
-  );
-};
-
-const ServiceModal = ({ isOpen, onClose, service }: { isOpen: boolean; onClose: () => void; service: any }) => {
-  if (!isOpen || !service) return null;
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className="relative w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50 sticky top-0 z-10 text-right" dir="rtl">
-            <div>
-              <h3 className="text-2xl font-bold text-slate-900">{service.title}</h3>
-              <p className="text-slate-500 text-sm">اختر الباقة المناسبة لاحتياجاتك</p>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors absolute left-8">
-              <X size={24} className="text-slate-500" />
-            </button>
-          </div>
-
-          <div className="p-8 grid md:grid-cols-3 gap-6" dir="rtl">
-            {service.tiers.map((tier: any, idx: number) => (
-              <div
-                key={idx}
-                className={`relative rounded-2xl p-6 border transition-all ${idx === 1
-                  ? 'border-[#00CC95] bg-[#00CC95]/5 shadow-lg scale-105 z-10'
-                  : 'border-slate-200 bg-white hover:border-slate-300'
-                  }`}
-              >
-                {idx === 1 && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#00CC95] text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-                    الأكثر طلباً
-                  </div>
-                )}
-                <h4 className="text-lg font-bold text-slate-900 mb-2">{tier.name}</h4>
-                <div className="flex items-baseline gap-1 mb-4 flex-row-reverse justify-end">
-                  <span className="text-3xl font-bold text-[#00CC95]">{tier.price}</span>
-                  <span className="text-xs text-slate-500">ريال</span>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {tier.features.map((feature: string, fIdx: number) => (
-                    <li key={fIdx} className="flex items-start gap-2 text-sm text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-[#00CC95] flex-shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={`https://wa.me/966XXXXXXXXX?text=مرحبا، أهتم بباقة ${tier.name} لخدمة ${service.title}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${idx === 1
-                    ? 'bg-[#00CC95] text-white hover:bg-[#00b383]'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                >
-                  <WhatsAppIcon className="w-5 h-5" />
-                  اطلب الآن
-                </a>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
-
-const DetailedServices = () => {
-  const [selectedService, setSelectedService] = useState<any>(null);
-
-  const services = [
-    {
-      id: 'landing',
-      title: 'صفحة هبوط (Landing Page)',
-      icon: Layout,
-      iconColor: 'bg-blue-50 text-blue-600',
-      price: '550 ريال',
-      description: 'صممت خصيصاً لتحويل الزوار إلى عملاء. مثالية للحملات الإعلانية.',
-      mainFeatures: ['تصميم جذاب وعصري', 'سرعة تحميل فائقة', 'ربط مع واتساب وCRM'],
-      tiers: [
-        {
-          name: 'الأساسية',
-          price: '550',
-          features: ['تصميم صفحة واحدة', 'شعار الهوية', 'ربط واتساب', 'تسليم خلال 48 ساعة']
-        },
-        {
-          name: 'المتقدمة',
-          price: '850',
-          features: ['كل ما في الأساسية', 'كتابة محتوى تسويقي', 'تحسين السرعة القصوى', 'ربط دومين خاص', 'تكامل مع سناب شات بيكسل']
-        },
-        {
-          name: 'الاحترافية',
-          price: '1,200',
-          features: ['كل ما في المتقدمة', 'تصميم A/B Testing', 'لوحة تحكم CRM مبسطة', 'دعم فني لمدة شهر', 'تحليلات زوار متقدمة']
-        }
-      ]
-    },
-    {
-      id: 'website',
-      title: 'موقع تعريفي متكامل',
-      icon: Globe,
-      iconColor: 'bg-purple-50 text-purple-600',
-      price: '999 ريال',
-      description: 'واجهة رقمية احترافية لشركتك لتعزيز المصداقية والوصول.',
-      mainFeatures: ['4 صفحات تعريفية', 'لوحة تحكم سهلة + محتوى', 'متوافق مع الشاشات + تعريف الموقع على جوجل بحث'],
-      tiers: [
-        {
-          name: 'الأساسية',
-          price: '999',
-          features: ['4 صفحات (الرئيسية، من نحن، خدماتنا، اتصل بنا)', 'تصميم متجاوب', 'لوحة تحكم + إضافة المحتوى', 'تعريف على خرائط جوجل', 'شهادة SSL مجانية']
-        },
-        {
-          name: 'المتقدمة',
-          price: '1,300',
-          features: ['6 صفحات تعريفية', 'معرض أعمال احترافي', 'مدونة أخبار الشركة', 'بريد إلكتروني رسمي (info@name.com)', 'حماية متقدمة', 'دعم فني لمدة شهر']
-        },
-        {
-          name: 'الاحترافية',
-          price: '1,700',
-          features: ['عدد صفحات مفتوح', 'تعدد لغات (عربي/إنجليزي)', 'نظام حجز مواعيد', 'شات بوت آلي للرد على العملاء', 'دعم فني VIP لمدة 3 أشهر', 'تحسين SEO متقدم']
-        }
-      ]
-    },
-    {
-      id: 'ecommerce',
-      title: 'إنشاء متجر إلكتروني إحترافي',
-      icon: ShoppingCart,
-      iconColor: 'bg-orange-50 text-orange-600',
-      price: '999 ريال',
-      description: 'متجر إلكتروني جاهز للبيع مع إدارة سهلة للمنتجات والطلبات.',
-      mainFeatures: ['تصميم عصري وسريع', 'لوحة تحكم للطلبات', 'إضافة منتجات بسهولة'],
-      tiers: [
-        {
-          name: 'الأساسية',
-          price: '999',
-          features: ['تصميم متجر بسيط وأنيق', 'إضافة حتى 20 منتج', 'ربط واتساب للطلبات', 'تحميل سريع للصفحات', 'شهادة SSL مجانية', 'تسليم خلال 5 أيام']
-        },
-        {
-          name: 'المتقدمة',
-          price: '1,400',
-          features: ['تصميم متجر احترافي مخصص', 'إضافة حتى 50 منتج', 'نظام إدارة الطلبات', 'بوابة دفع إلكتروني', 'ربط مع شركات الشحن', 'تقارير المبيعات', 'دعم فني أسبوع']
-        },
-        {
-          name: 'الاحترافية',
-          price: '1,700',
-          features: ['تصميم VIP حسب الطلب', 'منتجات غير محدودة', 'نظام إدارة متقدم للطلبات', 'كوبونات وعروض ترويجية', 'تطبيق موبايل PWA', 'تحسين SEO للمتجر', 'دعم فني شهر كامل']
-        }
-      ]
-    },
-    {
-      id: 'ads',
-      title: 'إدارة حملات جوجل (Ads)',
-      icon: Zap,
-      iconColor: 'bg-green-50 text-green-600',
-      price: '1,500 ريال / ش',
-      description: 'احصل على زيارات فورية وعملاء جاهزين للشراء الآن.',
-      mainFeatures: ['إدارة الحملات الإعلانية', 'تتبع النتائج (Tracking)', 'تحسين مستمر للحملات'],
-      tiers: [
-        {
-          name: 'الأساسية',
-          price: '1,500',
-          features: ['إدارة حملة بحث واحدة', 'بحث الكلمات المفتاحية', 'كتابة محتواى الإعلان', 'تقرير شهري']
-        },
-        {
-          name: 'المتقدمة',
-          price: '2,500',
-          features: ['إدارة 3 حملات (بحث، يوتيوب، ديسبلاي)', 'إعداد تتبع الاحالات (Conversions)', 'إعادة استهداف (Retargeting)', 'تقارير أسبوعية']
-        },
-        {
-          name: 'الاحترافية',
-          price: '4,000',
-          features: ['حملات غير محدودة', 'إدارة ميزانيات ضخمة', 'تصميم بنرات إعلانية', 'فريق مخصص', 'دعم 24/7']
-        }
-      ]
-    }
-  ];
-
-  return (
-    <div className="mt-20">
-      <div className="text-center mb-12">
-        <h3 className="text-2xl font-bold text-slate-900 mb-4">خدمات احترافية مفصلة</h3>
-        <p className="text-slate-500">حلول مخصصة لاحتياجاتك الدقيقة.</p>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        {services.map((service) => (
-          <motion.div
-            key={service.id}
-            whileHover={{ y: -5 }}
-            onClick={() => setSelectedService(service)}
-            className="group bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 items-start cursor-pointer hover:border-[#00CC95]/30 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ExternalLink className="text-[#00CC95]" size={20} />
-            </div>
-            <div className={`p-4 rounded-2xl ${service.iconColor}`}>
-              <service.icon className="w-8 h-8" />
-            </div>
-            <div className="flex-1 w-full">
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="text-xl font-bold text-slate-900">{service.title}</h4>
-                <div className="text-right">
-                  <span className="font-bold text-[#00CC95] block">{service.price}</span>
-                  <span className="text-[10px] text-slate-400 font-normal">يبدأ من</span>
-                </div>
-              </div>
-              <p className="text-slate-500 text-sm mb-4">{service.description}</p>
-              <ul className="space-y-2 mb-6">
-                {service.mainFeatures.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm text-slate-600">
-                    <CheckCircle2 className="w-4 h-4 text-[#00CC95]" /> {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="w-full py-2.5 rounded-xl bg-slate-50 text-slate-700 font-bold text-sm hover:bg-[#00CC95] hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:bg-[#00CC95] group-hover:text-white">
-                <WhatsAppIcon className="w-4 h-4" /> ابدأ الآن
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <ServiceModal
-        isOpen={!!selectedService}
-        onClose={() => setSelectedService(null)}
-        service={selectedService}
-      />
-    </div>
-  );
-};
-
-const Pricing = () => {
-  return (
-    <section id="packages" className="py-20 bg-slate-50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">باقات واضحة. بدون رسوم خفية.</h2>
-          <p className="text-slate-500">اختر السرعة التي تريد أن ينمو بها عملك.</p>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-8 items-center">
-          <PricingCard
-            title="الهوية الرقمية"
-            price="999"
-            description="مثالية للمحلات الجديدة والحرفيين الباحثين عن تواجد سريع."
-            features={[
-              "توثيق نشاطي التجاري (Google My Business)",
-              "صفحة هبوط سريع من صفحة واحدة",
-              "ربط الصفحة بواتساب او CRM Form",
-              "زر واتساب مباشر للمحادثة",
-              "باركود QR لتقييمات العملاء",
-              "التسليم خلال 48 ساعة"
-            ]}
-            delay={1}
-          />
-          <PricingCard
-            title="النمو السريع"
-            price="1,499"
-            description="الخيار الأفضل للعيادات والخدمات التي تحتاج اتصالات فورية."
-            recommended={true}
-            features={[
-              "كل مميزات باقة الهوية الرقمية",
-              "موقع شركة متكامل (4 صفحات)",
-              "صفحة هبوط عالية التحويل (Landing Page)",
-              "إعداد حملات جوجل الإعلانية",
-              "نظام تنبيهات للعملاء المحتملين (CRM)",
-              "تحسين محركات البحث الأساسي (SEO)",
-              "التسليم خلال 4 أيام"
-            ]}
-            delay={2}
-          />
-          <PricingCard
-            title="الهيمنة المحلية"
-            price="1,990"
-            description="للشركات القائمة التي تريد السيطرة على قطاعها."
-            features={[
-              "كل مميزات باقة النمو السريع",
-              "موقع شركة متكامل (6 صفحات)",
-              "إعداد نظام تتبع متقدم",
-              "إعداد حملات جوجل ادس",
-              "سيو محلي متقدم",
-              "إعداد بريد إلكتروني رسمي",
-              "تجهيز حسابات التواصل الاجتماعي",
-              "دعم فني ذو أولوية",
-              "التسليم خلال 7 أيام"
-            ]}
-            delay={3}
-          />
-        </div>
-
-        {/* Detailed Services Grid */}
-        <DetailedServices />
-      </div>
-    </section>
-  );
-};
-
 const Testimonials = () => {
   const testimonials = [
     {
@@ -1128,7 +932,6 @@ export default function App() {
         <ClientLogos />
         <Features />
         <Portfolio />
-        <Pricing />
         <Testimonials />
         <Footer />
         <StickyWhatsApp />
