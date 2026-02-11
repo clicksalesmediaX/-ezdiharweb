@@ -290,7 +290,7 @@ const Hero = () => {
         >
           <h2 className="text-lg md:text-xl font-bold tracking-wide">باقة استراتيجية النمو</h2>
           <div className="bg-[#00CC95] text-white rounded-full py-1.5 px-6 border-2 border-white font-extrabold text-sm">
-            فقط <span className="text-xl">1,100</span> ريال / شهرياً
+            فقط <span className="text-xl">1,190</span> ريال / شهرياً
           </div>
           <h2 className="text-lg md:text-xl font-bold hidden md:block">Growth Strategy Package</h2>
         </motion.div>
@@ -304,6 +304,7 @@ const Hero = () => {
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
             sidebarLabel="الهوية"
             items={[
+              { bold: "خطة تسويقية:", text: "استراتيجية تسويقية شاملة مخصصة لنشاطك التجاري وأهدافك." },
               { bold: "العلامة التجارية الاحترافية:", text: "تصميم الشعار، بطاقات العمل، والأوراق الرسمية." },
               { bold: "موقع إلكتروني سريع:", text: "موقع حديث وفائق السرعة مع صفحات ومنتجات غير محدودة." },
               { bold: "صفحة هبوط بيعية:", text: "صفحة مخصصة لتحويل الزيارات إلى عملاء محتملين فوراً." },
@@ -320,6 +321,7 @@ const Hero = () => {
             sidebarLabel="التواصل"
             badge="١٥ منتجاً شهرياً"
             items={[
+              { bold: "خطة المحتوى:", text: "خطة محتوى شهرية متكاملة تتوافق مع أهدافك التسويقية." },
               { bold: "6 منشورات جرافيك:", text: "للتوعية بالعلامة التجارية والتعليم." },
               { bold: "6 قصص (Stories) تفاعلية:", text: "لزيادة التفاعل والمبيعات." },
               { bold: "3 فيديوهات ريلز سينمائية:", text: "محتوى فيديو للوصول إلى أقصى انتشار." },
@@ -396,9 +398,9 @@ const Hero = () => {
             </div>
             <div className="flex-1 border-t md:border-t-0 md:border-r border-slate-100 pt-4 md:pt-0 md:pr-8">
               <div className="bg-[#00CC95]/10 p-4 rounded-xl">
-                <h4 className="font-bold text-slate-900 text-sm mb-2">تقارير مباشرة</h4>
+                <h4 className="font-bold text-slate-900 text-sm mb-2">نظام تتبع الحملات</h4>
                 <p className="text-slate-700 text-[13px] leading-relaxed">
-                  <span className="font-bold text-slate-900">لوحة تحكم فورية (Live ROI Dashboard):</span> رابط مباشر لتتبع النقرات والنتائج والنمو في الوقت الفعلي.
+                  <span className="font-bold text-slate-900">تقارير أسبوعية:</span> تقارير مفصلة أسبوعية لتتبع أداء حملاتك والنقرات والنتائج والنمو بشكل مستمر.
                 </p>
               </div>
             </div>
@@ -413,6 +415,11 @@ const Hero = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center"
         >
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-6 mb-8 inline-block shadow-xl">
+            <p className="text-lg md:text-xl font-bold mb-1">كل هذا بـ <span className="text-[#00CC95] text-3xl font-extrabold">1,190</span> ريال فقط / شهرياً</p>
+            <p className="text-slate-400 text-sm">بدون عقود طويلة • إلغاء في أي وقت • نتائج من الشهر الأول</p>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
             <a href="https://wa.me/966XXXXXXXXX" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
               <span className="relative z-10 flex items-center gap-2">
@@ -427,7 +434,7 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-sm font-semibold text-slate-400">
-            <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> +50 عميل في السعودية</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> +500 عميل في السعودية</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> تقييم 4.9/5</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> ضمان الرضا 100%</div>
           </div>
