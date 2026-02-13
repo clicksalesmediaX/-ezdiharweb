@@ -941,7 +941,9 @@ const ChatWidget = () => {
             {/* Header */}
             <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#00CC95] flex items-center justify-center font-bold text-lg">ك</div>
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#00CC95] bg-white">
+                  <Image src="/aiagent.png" alt="Karim AI" width={40} height={40} className="w-full h-full object-cover" />
+                </div>
                 <div>
                   <div className="font-bold text-sm">كريم - مساعد المبيعات</div>
                   <div className="text-[11px] text-emerald-300 flex items-center gap-1">
@@ -1069,15 +1071,13 @@ const ChatWidget = () => {
         {isOpen ? (
           <X size={24} />
         ) : (
-          <>
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z" />
-            </svg>
-            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/20">
+            <Image src="/aiagent.png" alt="Chat" width={56} height={56} className="w-full h-full object-cover" />
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 z-10">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
             </span>
-          </>
+          </div>
         )}
       </button>
     </div>
