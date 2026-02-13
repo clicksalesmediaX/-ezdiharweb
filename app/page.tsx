@@ -157,7 +157,7 @@ const ServiceCard = ({ number, title, items, sidebarColor, sidebarIcon, sidebarL
   number: string; title: string; items: { bold: string; text: string }[]; sidebarColor: string; sidebarIcon: React.ReactNode; sidebarLabel: string; badge?: string; delay: number;
 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 1, y: 0 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
@@ -188,7 +188,7 @@ const ServiceCard = ({ number, title, items, sidebarColor, sidebarIcon, sidebarL
 );
 
 const Hero = () => {
-  const [beams, setBeams] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([]);
+  const [beams, setBeams] = useState<Array<{ id: number; left: number; delay: number; duration: number; repeatDelay: number }>>([]);
 
   useEffect(() => {
     const generateBeams = () => {
@@ -199,6 +199,7 @@ const Hero = () => {
           left: Math.random() * 100,
           delay: Math.random() * 5,
           duration: 2 + Math.random() * 3,
+          repeatDelay: 2 + Math.random() * 4,
         });
       }
       setBeams(newBeams);
@@ -210,7 +211,7 @@ const Hero = () => {
     <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-slate-50">
       {/* Animated Grid Background */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
         className="absolute inset-0 z-0"
@@ -235,7 +236,7 @@ const Hero = () => {
             duration: beam.duration,
             delay: beam.delay,
             repeat: Infinity,
-            repeatDelay: 2 + Math.random() * 4,
+            repeatDelay: beam.repeatDelay,
             ease: 'linear',
           }}
           className="absolute z-10 w-[2px] h-24"
@@ -254,7 +255,7 @@ const Hero = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Hero Title */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
@@ -275,7 +276,7 @@ const Hero = () => {
 
         {/* Growth Strategy Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
@@ -356,7 +357,7 @@ const Hero = () => {
 
         {/* AI & Automation Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
@@ -369,7 +370,7 @@ const Hero = () => {
 
         {/* AI Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -404,7 +405,7 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -515,7 +516,7 @@ const ClientLogos = () => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
+const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ComponentType<{ className?: string }>; title: string; description: string }) => (
   <motion.div
     whileHover={{ y: -5 }}
     className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 transition-all group"
@@ -615,7 +616,7 @@ const PortfolioModal = ({ isOpen, onClose, url, title }: { isOpen: boolean; onCl
   );
 };
 
-const PortfolioItem = ({ title, category, color, url, onClick, image }: { title: string; category: string; color: string; url: string; onClick: () => void; image?: string }) => (
+const PortfolioItem = ({ title, category, color, onClick, image }: { title: string; category: string; color: string; onClick: () => void; image?: string }) => (
   <motion.div
     whileHover={{ y: -5 }}
     onClick={onClick}
@@ -700,7 +701,6 @@ const Portfolio = () => {
                     title={project.title}
                     category={project.category}
                     color={project.color}
-                    url={project.url}
                     image={project.image}
                     onClick={() => setSelectedProject({ url: project.url, title: project.title })}
                   />
@@ -809,7 +809,7 @@ const Testimonials = () => {
                     <Star key={starIdx} fill={starIdx < t.rating ? "currentColor" : "none"} className={starIdx < t.rating ? "text-yellow-400" : "text-slate-600"} size={16} />
                   ))}
                 </div>
-                <p className="text-slate-300 text-lg mb-8 leading-relaxed line-clamp-4">"{t.content}"</p>
+                <p className="text-slate-300 text-lg mb-8 leading-relaxed line-clamp-4">&quot;{t.content}&quot;</p>
                 <div className="text-right">
                   <div className="font-bold text-white text-lg">{t.name}</div>
                   <div className="text-sm text-slate-500">{t.role}</div>
@@ -839,7 +839,7 @@ const Testimonials = () => {
                     <Star key={starIdx} fill={starIdx < t.rating ? "currentColor" : "none"} className={starIdx < t.rating ? "text-yellow-400" : "text-slate-600"} size={16} />
                   ))}
                 </div>
-                <p className="text-slate-300 text-lg mb-8 leading-relaxed line-clamp-4">"{t.content}"</p>
+                <p className="text-slate-300 text-lg mb-8 leading-relaxed line-clamp-4">&quot;{t.content}&quot;</p>
                 <div className="text-right">
                   <div className="font-bold text-white text-lg">{t.name}</div>
                   <div className="text-sm text-slate-500">{t.role}</div>
