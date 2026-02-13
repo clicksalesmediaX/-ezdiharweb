@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -61,7 +61,7 @@ const Navbar = () => {
           <a href="#features" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">لماذا نحن؟</a>
           <a href="#portfolio" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">أعمالنا</a>
           <a href="#testimonials" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">النتائج</a>
-          <a href="https://wa.me/966XXXXXXXXX" className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
+          <a href="https://wa.me/971509714854" className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
             <WhatsAppIcon className="w-5 h-5" />
             ابدأ الآن فقط ب 1,190 ر.س
           </a>
@@ -138,7 +138,7 @@ const Navbar = () => {
                 className="absolute bottom-0 left-0 right-0 p-5 border-t border-slate-100 bg-slate-50"
               >
                 <a
-                  href="https://wa.me/966XXXXXXXXX"
+                  href="https://wa.me/971509714854"
                   className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white py-4 rounded-xl font-bold shadow-lg shadow-[#00CC95]/30"
                 >
                   <WhatsAppIcon className="w-5 h-5" />
@@ -416,7 +416,7 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-            <a href="https://wa.me/966XXXXXXXXX" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+            <a href="https://wa.me/971509714854" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
               <span className="relative z-10 flex items-center gap-2">
                 <WhatsAppIcon className="w-5 h-5" />
                 ابدأ نمو أعمالك الآن
@@ -853,38 +853,234 @@ const Testimonials = () => {
   );
 };
 
-const StickyWhatsApp = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="fixed bottom-6 right-6 z-50 flex items-end flex-col gap-4"
-    >
-      {/* AI Agent Bubble */}
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 2 }}
-        className="bg-white p-4 rounded-2xl rounded-bl-none shadow-xl border border-slate-100 max-w-[250px] mb-2 hidden sm:block"
-      >
-        <p className="text-sm text-slate-700">
-          <span className="font-bold text-[#00CC95]">المساعد الذكي:</span> هلا! جاهز نطلع بمشروعك أونلاين بـ 999 ريال؟
-        </p>
-      </motion.div>
+const ChatWidget = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showBubble, setShowBubble] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-      {/* Button */}
-      <a
-        href="https://wa.me/966XXXXXXXXX"
-        className="group flex items-center gap-3 bg-[#25D366] text-white px-5 py-3 rounded-full shadow-lg hover:shadow-[#25D366]/40 transition-all hover:-translate-y-1"
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowBubble(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const sendMessage = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput('');
+    const newMessages = [...messages, { role: 'user' as const, content: userMessage }];
+    setMessages(newMessages);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+      const data = await res.json();
+      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+    } catch {
+      setMessages([...newMessages, { role: 'assistant', content: 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.' }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const renderMessage = (content: string) => {
+    const showCTA = content.includes('[SHOW_WHATSAPP_CTA]');
+    const cleanContent = content.replace('[SHOW_WHATSAPP_CTA]', '').trim();
+
+    return (
+      <>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">{cleanContent}</p>
+        {showCTA && (
+          <a
+            href="https://wa.me/971509714854"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 px-4 rounded-xl font-bold text-sm hover:bg-[#20bd5a] transition-colors shadow-md"
+          >
+            <WhatsAppIcon className="w-5 h-5" />
+            تواصل معنا عبر الواتساب
+          </a>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="w-[360px] max-w-[calc(100vw-3rem)] h-[500px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#00CC95] flex items-center justify-center font-bold text-lg">ك</div>
+                <div>
+                  <div className="font-bold text-sm">كريم - مساعد المبيعات</div>
+                  <div className="text-[11px] text-emerald-300 flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+                    متصل الآن
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50" dir="rtl">
+              {/* Welcome message */}
+              {messages.length === 0 && (
+                <div className="bg-white p-3 rounded-2xl rounded-tr-sm shadow-sm border border-slate-100 max-w-[85%]">
+                  <p className="text-sm text-slate-700 leading-relaxed">
+                    أهلاً وسهلاً! أنا كريم من فريق إزدهار ويب 👋
+                    <br /><br />
+                    كيف أقدر أساعدك اليوم؟ سواء تبي تعرف عن باقة النمو أو عندك أي استفسار.
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {['ايش باقة النمو؟', 'كم السعر؟', 'ايش الخدمات؟'].map((q) => (
+                      <button
+                        key={q}
+                        onClick={() => {
+                          setInput(q);
+                          setTimeout(() => {
+                            setInput('');
+                            const newMsgs = [{ role: 'user' as const, content: q }];
+                            setMessages(newMsgs);
+                            setIsLoading(true);
+                            fetch('/api/chat', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ messages: newMsgs }),
+                            })
+                              .then(r => r.json())
+                              .then(d => setMessages([...newMsgs, { role: 'assistant', content: d.reply }]))
+                              .catch(() => setMessages([...newMsgs, { role: 'assistant', content: 'عذراً، حدث خطأ.' }]))
+                              .finally(() => setIsLoading(false));
+                          }, 0);
+                        }}
+                        className="text-xs bg-[#00CC95]/10 text-[#00CC95] px-3 py-1.5 rounded-full font-bold hover:bg-[#00CC95]/20 transition-colors"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`max-w-[85%] ${msg.role === 'user' ? 'mr-auto bg-[#00CC95] text-white rounded-2xl rounded-tl-sm p-3 shadow-sm' : 'bg-white rounded-2xl rounded-tr-sm p-3 shadow-sm border border-slate-100'}`}
+                >
+                  {msg.role === 'assistant' ? renderMessage(msg.content) : (
+                    <p className="text-sm leading-relaxed">{msg.content}</p>
+                  )}
+                </div>
+              ))}
+
+              {isLoading && (
+                <div className="bg-white rounded-2xl rounded-tr-sm p-3 shadow-sm border border-slate-100 max-w-[85%]">
+                  <div className="flex gap-1.5 items-center py-1">
+                    <span className="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input */}
+            <div className="p-3 border-t border-slate-100 bg-white shrink-0" dir="rtl">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="اكتب سؤالك..."
+                  className="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#00CC95] focus:ring-1 focus:ring-[#00CC95]/20 transition-colors text-right"
+                  disabled={isLoading}
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={isLoading || !input.trim()}
+                  className="bg-[#00CC95] text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-[#00b384] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                >
+                  <ArrowLeft size={18} />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toggle Button + Bubble */}
+      {!isOpen && showBubble && (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          onClick={() => { setIsOpen(true); setShowBubble(false); }}
+          className="bg-white p-3 rounded-2xl rounded-br-none shadow-xl border border-slate-100 max-w-[220px] cursor-pointer hover:shadow-2xl transition-shadow hidden sm:block"
+        >
+          <p className="text-sm text-slate-700">
+            <span className="font-bold text-[#00CC95]">كريم:</span> هلا! تبي تعرف كيف ننمي مشروعك؟ 🚀
+          </p>
+        </motion.div>
+      )}
+
+      <button
+        onClick={() => { setIsOpen(!isOpen); setShowBubble(false); }}
+        className="relative bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white w-14 h-14 rounded-full shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center"
       >
-        <span className="font-bold hidden group-hover:block transition-all">تواصل معنا</span>
-        <WhatsAppIcon className="w-8 h-8" />
-        <span className="absolute -top-1 -right-1 flex h-4 w-4">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
-        </span>
-      </a>
-    </motion.div>
+        {isOpen ? (
+          <X size={24} />
+        ) : (
+          <>
+            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z" />
+            </svg>
+            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
+            </span>
+          </>
+        )}
+      </button>
+    </div>
   );
 };
 
@@ -937,7 +1133,7 @@ export default function App() {
         <Portfolio />
         <Testimonials />
         <Footer />
-        <StickyWhatsApp />
+        <ChatWidget />
       </div>
     </>
   );
