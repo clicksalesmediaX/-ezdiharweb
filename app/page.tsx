@@ -193,7 +193,7 @@ const Hero = () => {
   useEffect(() => {
     const generateBeams = () => {
       const newBeams = [];
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 3; i++) {
         newBeams.push({
           id: i,
           left: Math.random() * 100,
@@ -248,8 +248,8 @@ const Hero = () => {
       ))}
 
       {/* Subtle glowing orbs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-100/30 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-emerald-100/40 rounded-full blur-[80px] md:blur-[120px] -translate-y-1/2 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-teal-100/30 rounded-full blur-[60px] md:blur-[100px] translate-y-1/2 -translate-x-1/4" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Hero Title */}
@@ -290,7 +290,7 @@ const Hero = () => {
         </motion.div>
 
         {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+        <div className="grid grid-cols-1 gap-8 mb-14">
           <ServiceCard
             number="١"
             title="هوية رقمية عالية الأداء"
@@ -331,6 +331,7 @@ const Hero = () => {
             sidebarIcon={<span className="text-4xl font-bold opacity-90">G</span>}
             sidebarLabel="البحث"
             items={[
+              { bold: "خطة تحسين البحث:", text: "تحليل المنافسين واستراتيجية تصدر نتائج البحث في مجالك." },
               { bold: "ملف جوجل التجاري (GMB):", text: "إعداد كامل وتحسين شهري لتصدر نتائج الخرائط." },
               { bold: "أرشفة البحث:", text: "الربط مع Google Search Console لضمان ظهور موقعك." },
             ]}
@@ -482,6 +483,8 @@ const ClientLogos = () => {
                   alt="Client Logo"
                   fill
                   className="object-contain"
+                  loading="lazy"
+                  sizes="128px"
                 />
               </div>
             ))}
@@ -500,6 +503,8 @@ const ClientLogos = () => {
                   alt="Client Logo"
                   fill
                   className="object-contain"
+                  loading="lazy"
+                  sizes="128px"
                 />
               </div>
             ))}
@@ -618,7 +623,7 @@ const PortfolioItem = ({ title, category, color, url, onClick, image }: { title:
   >
     <div className="h-48 w-full bg-slate-100 relative overflow-hidden" dir="ltr">
       {image ? (
-        <Image src={image} alt={title} fill className="object-cover" />
+        <Image src={image} alt={title} fill className="object-cover" loading="lazy" sizes="320px" />
       ) : (
         <>
           <div className={`absolute inset-0 opacity-20 ${color}`}></div>
