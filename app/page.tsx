@@ -301,15 +301,26 @@ const Hero = () => {
             items={[
               { bold: "خطة تسويقية:", text: "استراتيجية تسويقية شاملة مخصصة لنشاطك التجاري وأهدافك." },
               { bold: "العلامة التجارية الاحترافية:", text: "تصميم الشعار، بطاقات العمل، والأوراق الرسمية." },
-              { bold: "موقع إلكتروني سريع:", text: "موقع حديث وفائق السرعة مع صفحات ومنتجات غير محدودة." },
-              { bold: "صفحة هبوط بيعية:", text: "صفحة مخصصة لتحويل الزيارات إلى عملاء محتملين فوراً." },
-              { bold: "استضافة مجانية مدى الحياة:", text: "نوفر خادماً مداراً لموقعك بدون فواتير شهرية." },
             ]}
             delay={0.1}
           />
 
           <ServiceCard
             number="٢"
+            title="المواقع والمنصات"
+            sidebarColor="bg-indigo-600"
+            sidebarIcon={<Layout className="w-10 h-10 opacity-90" />}
+            sidebarLabel="المواقع"
+            items={[
+              { bold: "موقع إلكتروني سريع:", text: "موقع حديث وفائق السرعة مع صفحات ومنتجات غير محدودة." },
+              { bold: "صفحة هبوط بيعية:", text: "صفحة مخصصة لتحويل الزيارات إلى عملاء محتملين فوراً." },
+              { bold: "استضافة مجانية مدى الحياة:", text: "نوفر خادماً مداراً لموقعك بدون فواتير شهرية." },
+            ]}
+            delay={0.15}
+          />
+
+          <ServiceCard
+            number="٣"
             title="محتوى التواصل الاجتماعي"
             sidebarColor="bg-[#00CC95]"
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" /></svg>}
@@ -326,7 +337,7 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٣"
+            number="٤"
             title="السيطرة على محركات البحث"
             sidebarColor="bg-amber-500"
             sidebarIcon={<span className="text-4xl font-bold opacity-90">G</span>}
@@ -340,7 +351,7 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٤"
+            number="٥"
             title="التسويق عبر الأداء (الإعلانات)"
             sidebarColor="bg-rose-500"
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
@@ -378,7 +389,7 @@ const Hero = () => {
           className="bg-white border border-[#00CC95]/20 flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all mb-12"
         >
           <div className="w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs bg-gradient-to-b from-[#00CC95] to-emerald-700 relative">
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">٥</div>
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">٦</div>
             <svg className="w-10 h-10 mb-2 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             الابتكار
           </div>
