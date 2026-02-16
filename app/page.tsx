@@ -678,6 +678,7 @@ const Portfolio = () => {
     { title: 'شركة باجنيد', category: 'شركات', color: 'bg-yellow-600', url: 'https://bajunaid-sa.com/', image: '/portfolio/bajunaid.png' },
     { title: 'متجر المحامص الخضراء', category: 'مطاعم وكافيهات', color: 'bg-green-600', url: 'https://thegreenroasteries.com/', image: '/portfolio/greenroasteries.png' },
     { title: 'شركة الإستشارات الإستثمارية جوفرن فاليو', category: 'إستشارات', color: 'bg-purple-600', url: 'https://www.governvalu.com/', image: '/portfolio/govervalu.png' },
+    { title: 'متجر زولار', category: 'الأزياء والملابس العصرية', color: 'bg-purple-600', url: 'https://www.zolar.ma/', image: '/portfolio/zolar.png' },
   ];
 
   return (
