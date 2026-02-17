@@ -2,6 +2,40 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+
+// Declare fbq for TypeScript
+declare global {
+  interface Window {
+    fbq: (...args: unknown[]) => void;
+  }
+}
+
+// Track WhatsApp button clicks — fires both client Pixel + server CAPI
+const trackWhatsAppClick = () => {
+  const eventId = crypto.randomUUID();
+
+  // Client-side Pixel event
+  if (typeof window !== 'undefined' && window.fbq) {
+    window.fbq('track', 'Contact', {
+      content_name: 'WhatsApp Contact',
+      content_category: 'Lead',
+    }, { eventID: eventId });
+  }
+
+  // Server-side CAPI event
+  fetch('/api/meta-capi', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_name: 'Contact',
+      event_id: eventId,
+      source_url: window.location.href,
+      user_agent: navigator.userAgent,
+      fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1] || null,
+      fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1] || null,
+    }),
+  }).catch((err) => console.error('CAPI tracking error:', err));
+};
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2,
@@ -61,7 +95,7 @@ const Navbar = () => {
           <a href="#features" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">لماذا نحن؟</a>
           <a href="#portfolio" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">أعمالنا</a>
           <a href="#testimonials" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">النتائج</a>
-          <a href="https://wa.me/971509714854" className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
+          <a href="https://wa.me/971509714854" onClick={trackWhatsAppClick} className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
             <WhatsAppIcon className="w-5 h-5" />
             ابدأ الآن فقط ب 1,190 ر.س
           </a>
@@ -139,6 +173,7 @@ const Navbar = () => {
               >
                 <a
                   href="https://wa.me/971509714854"
+                  onClick={trackWhatsAppClick}
                   className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white py-4 rounded-xl font-bold shadow-lg shadow-[#00CC95]/30"
                 >
                   <WhatsAppIcon className="w-5 h-5" />
@@ -429,7 +464,7 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-            <a href="https://wa.me/971509714854" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+            <a href="https://wa.me/971509714854" onClick={trackWhatsAppClick} className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
               <span className="relative z-10 flex items-center gap-2">
                 <WhatsAppIcon className="w-5 h-5" />
                 ابدأ نمو أعمالك الآن
@@ -930,6 +965,7 @@ const ChatWidget = () => {
             href="https://wa.me/971509714854"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackWhatsAppClick}
             className="mt-3 flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 px-4 rounded-xl font-bold text-sm hover:bg-[#20bd5a] transition-colors shadow-md"
           >
             <WhatsAppIcon className="w-5 h-5" />
