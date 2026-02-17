@@ -328,8 +328,8 @@ const Hero = () => {
         {/* Service Cards Grid */}
         <div className="grid grid-cols-1 gap-8 mb-14">
           <ServiceCard
-            number="١"
-            title="هوية رقمية عالية الأداء"
+            number="1"
+            title="الهوية والعلامة التجارية"
             sidebarColor="bg-slate-800"
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
             sidebarLabel="الهوية"
@@ -342,8 +342,8 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٢"
-            title="المواقع والمنصات"
+            number="2"
+            title="تصميم موقع إلكتروني وصفحة هبوط بيعية"
             sidebarColor="bg-indigo-600"
             sidebarIcon={<Layout className="w-10 h-10 opacity-90" />}
             sidebarLabel="المواقع"
@@ -356,8 +356,8 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٣"
-            title="محتوى التواصل الاجتماعي"
+            number="3"
+            title="إدارة وسائل التواصل الاجتماعي"
             sidebarColor="bg-[#00CC95]"
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" /></svg>}
             sidebarLabel="التواصل"
@@ -373,8 +373,8 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٤"
-            title="السيطرة على محركات البحث"
+            number="4"
+            title="تصدر نتائج البحث في جوجل و مواقع الذكاء الإصطناعي"
             sidebarColor="bg-amber-500"
             sidebarIcon={<span className="text-4xl font-bold opacity-90">G</span>}
             sidebarLabel="البحث"
@@ -387,8 +387,8 @@ const Hero = () => {
           />
 
           <ServiceCard
-            number="٥"
-            title="التسويق عبر الأداء (الإعلانات)"
+            number="5"
+            title="التسويق عبر الأداء (إدارة الحملات الإعلانية المدفوعة)"
             sidebarColor="bg-rose-500"
             sidebarIcon={<svg className="w-10 h-10 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
             sidebarLabel="الإعلانات"
