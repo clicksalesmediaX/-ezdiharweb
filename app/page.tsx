@@ -425,14 +425,14 @@ const Hero = () => {
           className="bg-white border border-[#00CC95]/20 flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all mb-12"
         >
           <div className="w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs bg-gradient-to-b from-[#00CC95] to-emerald-700 relative">
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">٦</div>
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">6</div>
             <svg className="w-10 h-10 mb-2 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             الابتكار
           </div>
           <div className="p-6 flex-1 flex flex-col md:flex-row gap-8">
             <div className="flex-1">
               <h3 className="font-bold text-slate-900 text-xl mb-3 flex items-center gap-2">
-                الذكاء الاصطناعي والأتمتة
+                الذكاء الاصطناعي لنمو الأعمال
               </h3>
               <ul className="text-[14px] space-y-3 text-slate-600 list-disc mr-5 leading-relaxed">
                 <li><span className="font-bold text-slate-800">عميل ذكاء اصطناعي للموقع 24/7:</span> شات بوت ذكي للرد على العملاء وجمع البيانات فوراً.</li>
