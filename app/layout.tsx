@@ -14,12 +14,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "إزدهار ويب | خدمات النمو الرقمي",
-  description: "خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية. مواقع، متاجر، وإعلانات جوجل مصممة لتحويل كل ريال تدفعه إلى أرباح حقيقية.",
+  title: "إزدهار ويب | باقة النمو الرقمي المتكاملة - السعودية، الإمارات، قطر، الكويت، عُمان",
+  description: "خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في الخليج. مواقع، متاجر، إعلانات جوجل، وإدارة سوشيال ميديا - باقة شاملة تبدأ من 99 دينار شهرياً.",
+  keywords: "تسويق رقمي, تصميم مواقع, إعلانات جوجل, سوشيال ميديا, السعودية, الإمارات, قطر, الكويت, عُمان, إزدهار ويب",
   icons: {
     icon: "/ezdiharfav.png",
     shortcut: "/ezdiharfav.png",
     apple: "/ezdiharfav.png",
+  },
+  openGraph: {
+    title: "إزدهار ويب | باقة النمو الرقمي المتكاملة",
+    description: "خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية. مواقع، متاجر، إعلانات جوجل، وإدارة سوشيال ميديا.",
+    type: "website",
+    locale: "ar_SA",
   },
 };
 
@@ -29,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -62,6 +69,25 @@ export default function RootLayout({
           />
         </noscript>
         {/* End Meta Pixel Code */}
+
+        {/* Google Analytics (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3Z6HTRV6EB"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-3Z6HTRV6EB');
+            `,
+          }}
+        />
+        {/* End Google Analytics */}
 
         {children}
       </body>

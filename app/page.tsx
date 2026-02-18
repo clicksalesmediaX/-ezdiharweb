@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { GeoProvider, useGeo } from '@/lib/geo-context';
 
 // Declare fbq for TypeScript
 declare global {
   interface Window {
     fbq: (...args: unknown[]) => void;
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -20,6 +23,15 @@ const trackWhatsAppClick = () => {
       content_name: 'WhatsApp Contact',
       content_category: 'Lead',
     }, { eventID: eventId });
+  }
+
+  // Google Analytics event
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'whatsapp_click', {
+      event_category: 'engagement',
+      event_label: 'WhatsApp Contact Button',
+      value: 1,
+    });
   }
 
   // Server-side CAPI event
@@ -36,6 +48,14 @@ const trackWhatsAppClick = () => {
     }),
   }).catch((err) => console.error('CAPI tracking error:', err));
 };
+
+// Reusable Google Analytics event tracker
+const trackGAEvent = (eventName: string, params?: Record<string, string | number>) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', eventName, params || {});
+  }
+};
+
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle2,
@@ -76,6 +96,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { config } = useGeo();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -86,18 +107,19 @@ const Navbar = () => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
           <Image src="/ezdihar.png" alt="إزدهار ويب" width={140} height={40} className="h-10 w-auto" />
+
         </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">لماذا نحن؟</a>
-          <a href="#portfolio" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">أعمالنا</a>
-          <a href="#testimonials" className="text-slate-600 hover:text-[#00CC95] transition-colors font-medium">النتائج</a>
-          <a href="https://wa.me/971509714854" onClick={trackWhatsAppClick} className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
+          <a href="#features" className="text-slate-600 hover:transition-colors font-medium" style={{ ['--tw-text-opacity' as string]: 1 }} onMouseEnter={(e) => (e.currentTarget.style.color = config.accentColor)} onMouseLeave={(e) => (e.currentTarget.style.color = '')}>لماذا نحن؟</a>
+          <a href="#portfolio" className="text-slate-600 hover:transition-colors font-medium" onMouseEnter={(e) => (e.currentTarget.style.color = config.accentColor)} onMouseLeave={(e) => (e.currentTarget.style.color = '')}>أعمالنا</a>
+          <a href="#testimonials" className="text-slate-600 hover:transition-colors font-medium" onMouseEnter={(e) => (e.currentTarget.style.color = config.accentColor)} onMouseLeave={(e) => (e.currentTarget.style.color = '')}>النتائج</a>
+          <a href={`https://wa.me/${config.whatsappNumber}`} onClick={trackWhatsAppClick} className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
             <WhatsAppIcon className="w-5 h-5" />
-            ابدأ الآن فقط ب 1,190 ر.س
+            ابدأ الآن فقط ب {config.price} {config.currency}
           </a>
         </div>
 
@@ -172,9 +194,10 @@ const Navbar = () => {
                 className="absolute bottom-0 left-0 right-0 p-5 border-t border-slate-100 bg-slate-50"
               >
                 <a
-                  href="https://wa.me/971509714854"
+                  href={`https://wa.me/${config.whatsappNumber}`}
                   onClick={trackWhatsAppClick}
-                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white py-4 rounded-xl font-bold shadow-lg shadow-[#00CC95]/30"
+                  className="flex items-center justify-center gap-2 w-full text-white py-4 rounded-xl font-bold shadow-lg"
+                  style={{ background: `linear-gradient(to right, ${config.accentColor}, ${config.accentColorDark})`, boxShadow: `0 10px 15px -3px rgba(${config.accentRgb}, 0.3)` }}
                 >
                   <WhatsAppIcon className="w-5 h-5" />
                   تواصل معنا
@@ -210,7 +233,7 @@ const ServiceCard = ({ number, title, items, sidebarColor, sidebarIcon, sidebarL
       <div className="flex justify-between items-start mb-3">
         <h3 className="font-bold text-slate-900 text-lg">{title}</h3>
         {badge && (
-          <span className="bg-[#00CC95]/10 text-[#00CC95] text-[10px] px-2.5 py-1 rounded-full font-bold whitespace-nowrap">{badge}</span>
+          <span className="text-[10px] px-2.5 py-1 rounded-full font-bold whitespace-nowrap" style={{ backgroundColor: `rgba(${useGeo().config.accentRgb}, 0.1)`, color: useGeo().config.accentColor }}>{badge}</span>
         )}
       </div>
       <ul className="text-[13px] space-y-2 text-slate-600 list-disc mr-5 leading-relaxed">
@@ -223,6 +246,7 @@ const ServiceCard = ({ number, title, items, sidebarColor, sidebarIcon, sidebarL
 );
 
 const Hero = () => {
+  const { config } = useGeo();
   const [beams, setBeams] = useState<Array<{ id: number; left: number; delay: number; duration: number; repeatDelay: number }>>([]);
 
   useEffect(() => {
@@ -254,7 +278,7 @@ const Hero = () => {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-width='2' stroke='rgb(0 204 149 / 0.08)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
+            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-width='2' stroke='${encodeURIComponent(config.accentColor)}14'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 via-transparent to-slate-50" />
@@ -277,8 +301,8 @@ const Hero = () => {
           className="absolute z-10 w-[2px] h-24"
           style={{
             left: `${beam.left}%`,
-            background: 'linear-gradient(to bottom, transparent, #00CC95, transparent)',
-            boxShadow: '0 0 12px 3px rgba(0, 204, 149, 0.25)',
+            background: `linear-gradient(to bottom, transparent, ${config.accentColor}, transparent)`,
+            boxShadow: `0 0 12px 3px rgba(${config.accentRgb}, 0.25)`,
           }}
         />
       ))}
@@ -295,17 +319,17 @@ const Hero = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <span className="inline-block py-1 px-3 rounded-full bg-[#00CC95]/10 text-[#00CC95] font-semibold text-sm mb-6 border border-[#00CC95]/20 backdrop-blur-sm">
+          <span className="inline-block py-1 px-3 rounded-full text-sm mb-6 backdrop-blur-sm font-semibold" style={{ backgroundColor: `rgba(${config.accentRgb}, 0.1)`, color: config.accentColor, borderColor: `rgba(${config.accentRgb}, 0.2)`, borderWidth: '1px' }}>
             🚀 باقة النمو الرقمي المتكاملة
           </span>
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
             نمو أعمالك لا يحتاج ميزانيات ضخمة.. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CC95] to-[#00CC6C]">
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${config.accentColor}, ${config.accentColorDark})` }}>
               احصل على نتائج احترافية بأسعار تنافسية.
             </span>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            في إزدهار ويب، نحطم قاعدة &quot;الغالي ثمنه فيه&quot;. نقدم لك خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية، مصممة خصيصاً لتحويل كل ريال تدفعه إلى أرباح حقيقية.
+            في إزدهار ويب، نحطم قاعدة &quot;الغالي ثمنه فيه&quot;. نقدم لك خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية، مصممة خصيصاً لتحويل {config.heroSubtext}.
           </p>
         </motion.div>
 
@@ -319,8 +343,8 @@ const Hero = () => {
           id="packages"
         >
           <h2 className="text-lg md:text-xl font-bold tracking-wide">باقة استراتيجية النمو</h2>
-          <div className="bg-[#00CC95] text-white rounded-full py-1.5 px-6 border-2 border-white font-extrabold text-sm">
-            فقط <span className="text-xl">1,190</span> ريال / شهرياً
+          <div className="text-white rounded-full py-1.5 px-6 border-2 border-white font-extrabold text-sm" style={{ backgroundColor: config.accentColor }}>
+            فقط <span className="text-xl">{config.price}</span> {config.currency} / شهرياً
           </div>
           <h2 className="text-lg md:text-xl font-bold hidden md:block">Growth Strategy Package</h2>
         </motion.div>
@@ -396,7 +420,7 @@ const Hero = () => {
               { bold: "إدارة منصات متعددة:", text: "سناب شات، إنستغرام، وفيسبوك." },
               { bold: "إدارة إعلانات البحث:", text: "حملات Google Ads لاستهداف الباحثين عن خدماتك." },
               { bold: "استهداف متقدم:", text: "حسب المدينة، الحي، العمر، والاهتمامات." },
-              { bold: "كتابة محتوى محلي:", text: "صياغة إعلانية باللهجة السعودية واللغة الإنجليزية." },
+              { bold: "كتابة محتوى محلي:", text: `صياغة إعلانية ${config.adCopyDialect}.` },
             ]}
             delay={0.4}
           />
@@ -422,10 +446,11 @@ const Hero = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
           whileHover={{ y: -4 }}
-          className="bg-white border border-[#00CC95]/20 flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all mb-12"
+          className="bg-white flex relative min-h-[200px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all mb-12"
+          style={{ borderColor: `rgba(${config.accentRgb}, 0.2)`, borderWidth: '1px' }}
         >
-          <div className="w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs bg-gradient-to-b from-[#00CC95] to-emerald-700 relative">
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 bg-[#00CC95] text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm">6</div>
+          <div className="w-[100px] flex flex-col items-center justify-center text-white p-4 pt-8 text-center font-bold text-xs relative" style={{ background: `linear-gradient(to bottom, ${config.accentColor}, ${config.accentColorDark})` }}>
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-9 h-9 text-white rounded-full flex items-center justify-center font-bold z-10 border-[3px] border-white shadow-md text-sm" style={{ backgroundColor: config.accentColor }}>6</div>
             <svg className="w-10 h-10 mb-2 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             الابتكار
           </div>
@@ -440,7 +465,7 @@ const Hero = () => {
               </ul>
             </div>
             <div className="flex-1 border-t md:border-t-0 md:border-r border-slate-100 pt-4 md:pt-0 md:pr-8">
-              <div className="bg-[#00CC95]/10 p-4 rounded-xl">
+              <div className="p-4 rounded-xl" style={{ backgroundColor: `rgba(${config.accentRgb}, 0.1)` }}>
                 <h4 className="font-bold text-slate-900 text-sm mb-2">نظام تتبع الحملات</h4>
                 <p className="text-slate-700 text-[13px] leading-relaxed">
                   <span className="font-bold text-slate-900">تقارير أسبوعية:</span> تقارير مفصلة أسبوعية لتتبع أداء حملاتك والنقرات والنتائج والنمو بشكل مستمر.
@@ -459,12 +484,12 @@ const Hero = () => {
           className="text-center"
         >
           <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-6 mb-8 inline-block shadow-xl">
-            <p className="text-lg md:text-xl font-bold mb-1">كل هذا بـ <span className="text-[#00CC95] text-3xl font-extrabold">1,190</span> ريال فقط / شهرياً</p>
+            <p className="text-lg md:text-xl font-bold mb-1">كل هذا بـ <span className="text-3xl font-extrabold" style={{ color: config.accentColor }}>{config.price}</span> {config.currency} فقط / شهرياً</p>
             <p className="text-slate-400 text-sm">بدون عقود طويلة • إلغاء في أي وقت • نتائج من الشهر الأول</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-            <a href="https://wa.me/971509714854" onClick={trackWhatsAppClick} className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white font-bold text-lg shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+            <a href={`https://wa.me/${config.whatsappNumber}`} onClick={trackWhatsAppClick} className="w-full sm:w-auto px-8 py-4 rounded-full text-white font-bold text-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 relative overflow-hidden group" style={{ background: `linear-gradient(to right, ${config.accentColor}, ${config.accentColorDark})`, boxShadow: `0 10px 15px -3px rgba(${config.accentRgb}, 0.3)` }}>
               <span className="relative z-10 flex items-center gap-2">
                 <WhatsAppIcon className="w-5 h-5" />
                 ابدأ نمو أعمالك الآن
@@ -477,9 +502,9 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-sm font-semibold text-slate-400">
-            <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> +500 عميل في السعودية</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> تقييم 4.9/5</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="text-[#00CC95]" size={16} /> ضمان الرضا 100%</div>
+            <div className="flex items-center gap-2"><CheckCircle2 style={{ color: config.accentColor }} size={16} /> {config.clientCount}</div>
+            <div className="flex items-center gap-2"><CheckCircle2 style={{ color: config.accentColor }} size={16} /> تقييم 4.9/5</div>
+            <div className="flex items-center gap-2"><CheckCircle2 style={{ color: config.accentColor }} size={16} /> ضمان الرضا 100%</div>
           </div>
         </motion.div>
       </div>
@@ -563,20 +588,24 @@ const ClientLogos = () => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ComponentType<{ className?: string }>; title: string; description: string }) => (
-  <motion.div
-    whileHover={{ y: -5 }}
-    className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 transition-all group"
-  >
-    <div className="w-12 h-12 rounded-xl bg-[#00CC95]/10 flex items-center justify-center mb-6 group-hover:bg-[#00CC95] transition-colors duration-300">
-      <Icon className="w-6 h-6 text-[#00CC95] group-hover:text-white transition-colors duration-300" />
-    </div>
-    <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
-    <p className="text-slate-500 leading-relaxed">{description}</p>
-  </motion.div>
-);
+const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; title: string; description: string }) => {
+  const { config } = useGeo();
+  return (
+    <motion.div
+      whileHover={{ y: -5 }}
+      className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md border border-slate-100 transition-all group"
+    >
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300" style={{ backgroundColor: `rgba(${config.accentRgb}, 0.1)` }}>
+        <Icon className="w-6 h-6 transition-colors duration-300" style={{ color: config.accentColor }} />
+      </div>
+      <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
+      <p className="text-slate-500 leading-relaxed">{description}</p>
+    </motion.div>
+  );
+};
 
 const Features = () => {
+  const { config } = useGeo();
   return (
     <section id="features" className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -589,7 +618,7 @@ const Features = () => {
           <FeatureCard
             icon={DollarSign}
             title="التكلفة الاقتصادية الذكية"
-            description="جودة احترافية بسعر لا يُنافس. صممنا باقاتنا لتناسب الشركات الناشئة والمتوسطة في السعودية والخليج، لتصل إلى جمهورك وتنافس الكبار دون الحاجة لميزانيات ضخمة."
+            description={`جودة احترافية بسعر لا يُنافس. صممنا باقاتنا لتناسب الشركات الناشئة والمتوسطة في ${config.name} والخليج، لتصل إلى جمهورك وتنافس الكبار دون الحاجة لميزانيات ضخمة.`}
           />
           <FeatureCard
             icon={TrendingUp} // Using TrendingUp as BarChart/Revenue alternative or could use BarChart3
@@ -603,8 +632,8 @@ const Features = () => {
           />
           <FeatureCard
             icon={Users}
-            title="خبرة في السوق الخليجي"
-            description="نفهم جمهورك المحلي. لدينا خبرة عميقة في سلوك المستهلك السعودي والخليجي، مما يضمن أن تكون تصاميمنا وحملاتنا متوافقة مع ذوق واهتمامات عملائك المستهدفين."
+            title={`خبرة في السوق الخليجي`}
+            description={`نفهم جمهورك المحلي. لدينا خبرة عميقة في سلوك المستهلك في ${config.name} والخليج، مما يضمن أن تكون تصاميمنا وحملاتنا متوافقة مع ذوق واهتمامات عملائك المستهدفين.`}
           />
           <FeatureCard
             icon={Cpu}
@@ -694,13 +723,14 @@ const PortfolioItem = ({ title, category, color, onClick, image }: { title: stri
       </div>
     </div>
     <div className="p-6 text-right" dir="rtl">
-      <div className="text-xs font-bold text-[#00CC95] uppercase tracking-wide mb-1">{category}</div>
-      <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#00CC95] transition-colors">{title}</h3>
+      <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: useGeo().config.accentColor }}>{category}</div>
+      <h3 className="text-lg font-bold text-slate-900 transition-colors">{title}</h3>
     </div>
   </motion.div>
 );
 
 const Portfolio = () => {
+  const { config } = useGeo();
   const [selectedProject, setSelectedProject] = useState<{ url: string; title: string } | null>(null);
 
   const projects = [
@@ -724,7 +754,7 @@ const Portfolio = () => {
             <h2 className="text-3xl font-bold text-slate-900 mb-2">أحدث أعمالنا</h2>
             <p className="text-slate-500">شاهد كيف نساعد الشركات على النمو رقمياً.</p>
           </div>
-          <a href="#" className="text-[#00CC95] font-bold flex items-center gap-2 hover:gap-3 transition-all">
+          <a href="#" className="font-bold flex items-center gap-2 hover:gap-3 transition-all" style={{ color: config.accentColor }}>
             عرض كامل الأعمال <ArrowLeft size={18} />
           </a>
         </div>
@@ -750,7 +780,10 @@ const Portfolio = () => {
                     category={project.category}
                     color={project.color}
                     image={project.image}
-                    onClick={() => setSelectedProject({ url: project.url, title: project.title })}
+                    onClick={() => {
+                      setSelectedProject({ url: project.url, title: project.title });
+                      trackGAEvent('portfolio_click', { event_category: 'engagement', event_label: project.title });
+                    }}
                   />
                 ))}
               </div>
@@ -771,62 +804,20 @@ const Portfolio = () => {
 };
 
 const Testimonials = () => {
-  const testimonials = [
-    {
-      name: "د. أحمد الشمري",
-      role: "مالك عيادة أسنان، الرياض",
-      content: "كنا نعاني في جذب المراجعين للعيادة. قام فريق إزدهار ويب بإنشاء صفحة الهبوط وضبط الخرائط في 3 أيام فقط. تلقينا 15 اتصالاً في الأسبوع الأول.",
-      initial: "د.أ",
-      rating: 5
-    },
-    {
-      name: "عمر السيد",
-      role: "مؤسسة مقاولات، جدة",
-      content: "بسيط، سريع، ورخيص. بالضبط ما كنت أحتاجه لمؤسسة المقاولات الخاصة بي. زر الواتساب يعمل بشكل ممتاز والعملاء يمدحون سهولة الوصول.",
-      initial: "ع.س",
-      rating: 5
-    },
-    {
-      name: "سارة العلي",
-      role: "متجر زهور، الدمام",
-      content: "تصميم المتجر خرافي! المبيعات زادت بنسبة 40% بعد إطلاق الحملات الإعلانية معهم. فريق محترف ومتجاوب جداً.",
-      initial: "س.ع",
-      rating: 5
-    },
-    {
-      name: "م. خالد العنزي",
-      role: "مكتب استشارات هندسية",
-      content: "خدمة العملاء عندهم لا يعلى عليها. أي تعديل أحتاجه يتم تنفيذه فوراً. الموقع الجديد أعطى شركتنا مظهراً احترافياً أمام العملاء.",
-      initial: "م.خ",
-      rating: 5
-    },
-    {
-      name: "فهد الدوسري",
-      role: "شركة نقل عفش",
-      content: "جربنا شركات كثير قبلهم، لكن إزدهار ويب كانوا الأصدق والأسرع. حملات جوجل أدز جابت لنا عقود شركات كبيرة.",
-      initial: "ف.د",
-      rating: 5
-    },
-    {
-      name: "نورة القحطاني",
-      role: "مركز تجميل نسائي",
-      content: "نظام حجز المواعيد اللي ركبوه لنا ريحنا من اتصالات كثيرة. شكراً لكم على الشغل المرتب والنظيف.",
-      initial: "ن.ق",
-      rating: 5
-    }
-  ];
+  const { config } = useGeo();
+  const testimonials = config.testimonials;
 
   return (
     <section id="testimonials" className="py-24 bg-slate-900 overflow-hidden relative">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#00CC95]/10 via-transparent to-transparent opacity-50"></div>
+      <div className="absolute inset-0 opacity-50" style={{ background: `radial-gradient(circle at top right, rgba(${config.accentRgb}, 0.1), transparent, transparent)` }}></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-16">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            قصص نجاح <span className="text-[#00CC95]">شركائنا</span>
+            قصص نجاح <span style={{ color: config.accentColor }}>شركائنا</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            أكثر من 500 شركة وثقت بنا لبناء هويتهم الرقمية. نفخر بكوننا جزءاً من نجاحهم.
+            {config.clientCount.replace('+', 'أكثر من ')} وثقوا بنا لبناء هويتهم الرقمية. نفخر بكوننا جزءاً من نجاحهم.
           </p>
         </div>
       </div>
@@ -849,7 +840,8 @@ const Testimonials = () => {
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="w-[350px] md:w-[450px] bg-slate-800/50 backdrop-blur-md p-8 rounded-3xl border border-slate-700/50 hover:border-[#00CC95]/30 transition-all shrink-0 text-right"
+                className={`w-[350px] md:w-[450px] bg-slate-800/50 backdrop-blur-md p-8 rounded-3xl border border-slate-700/50 transition-all shrink-0 text-right`}
+                style={{ ['--hover-border' as string]: `rgba(${config.accentRgb}, 0.3)` }}
                 dir="rtl"
               >
                 <div className="flex gap-1 text-yellow-400 mb-6 justify-end">
@@ -902,6 +894,7 @@ const Testimonials = () => {
 };
 
 const ChatWidget = () => {
+  const { config } = useGeo();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
   const [input, setInput] = useState('');
@@ -962,7 +955,7 @@ const ChatWidget = () => {
         <p className="text-sm leading-relaxed whitespace-pre-wrap">{cleanContent}</p>
         {showCTA && (
           <a
-            href="https://wa.me/971509714854"
+            href={`https://wa.me/${config.whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={trackWhatsAppClick}
@@ -990,7 +983,7 @@ const ChatWidget = () => {
             {/* Header */}
             <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#00CC95] bg-white">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-white" style={{ borderWidth: '2px', borderColor: config.accentColor }}>
                   <Image src="/aiagent.png" alt="Karim AI" width={40} height={40} className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -1053,7 +1046,8 @@ const ChatWidget = () => {
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`max-w-[85%] ${msg.role === 'user' ? 'mr-auto bg-[#00CC95] text-white rounded-2xl rounded-tl-sm p-3 shadow-sm' : 'bg-white rounded-2xl rounded-tr-sm p-3 shadow-sm border border-slate-100'}`}
+                  className={`max-w-[85%] ${msg.role === 'user' ? 'mr-auto text-white rounded-2xl rounded-tl-sm p-3 shadow-sm' : 'bg-white rounded-2xl rounded-tr-sm p-3 shadow-sm border border-slate-100'}`}
+                  style={msg.role === 'user' ? { backgroundColor: config.accentColor } : undefined}
                 >
                   {msg.role === 'assistant' ? renderMessage(msg.content) : (
                     <p className="text-sm leading-relaxed">{msg.content}</p>
@@ -1088,7 +1082,8 @@ const ChatWidget = () => {
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || !input.trim()}
-                  className="bg-[#00CC95] text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-[#00b384] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  className="bg-[#00CC95] text-white w-10 h-10 rounded-xl flex items-center justify-center hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  style={{ backgroundColor: config.accentColor }}
                 >
                   <ArrowLeft size={18} />
                 </button>
@@ -1099,23 +1094,26 @@ const ChatWidget = () => {
       </AnimatePresence>
 
       {/* Toggle Button + Bubble */}
-      {!isOpen && showBubble && (
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          onClick={() => { setIsOpen(true); setShowBubble(false); }}
-          className="bg-white p-3 rounded-2xl rounded-br-none shadow-xl border border-slate-100 max-w-[220px] cursor-pointer hover:shadow-2xl transition-shadow hidden sm:block"
-        >
-          <p className="text-sm text-slate-700">
-            <span className="font-bold text-[#00CC95]">كريم:</span> هلا! تبي تعرف كيف ننمي مشروعك؟ 🚀
-          </p>
-        </motion.div>
-      )}
+      {
+        !isOpen && showBubble && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            onClick={() => { setIsOpen(true); setShowBubble(false); }}
+            className="bg-white p-3 rounded-2xl rounded-br-none shadow-xl border border-slate-100 max-w-[220px] cursor-pointer hover:shadow-2xl transition-shadow hidden sm:block"
+          >
+            <p className="text-sm text-slate-700">
+              <span className="font-bold text-[#00CC95]">كريم:</span> هلا! تبي تعرف كيف ننمي مشروعك؟ 🚀
+            </p>
+          </motion.div>
+        )
+      }
 
       <button
-        onClick={() => { setIsOpen(!isOpen); setShowBubble(false); }}
-        className="relative bg-gradient-to-r from-[#00CC95] to-[#00CC6C] text-white w-14 h-14 rounded-full shadow-lg shadow-[#00CC95]/30 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center"
+        onClick={() => { setIsOpen(!isOpen); setShowBubble(false); if (!isOpen) trackGAEvent('chat_open', { event_category: 'engagement', event_label: 'AI Chat Widget' }); }}
+        className="relative text-white w-14 h-14 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center"
+        style={{ background: `linear-gradient(to right, ${config.accentColor}, ${config.accentColorDark})`, boxShadow: `0 10px 15px -3px rgba(${config.accentRgb}, 0.3)` }}
       >
         {isOpen ? (
           <X size={24} />
@@ -1129,11 +1127,12 @@ const ChatWidget = () => {
           <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
         </span>
       </button>
-    </div>
+    </div >
   );
 };
 
 const Footer = () => {
+  const { config } = useGeo();
   return (
     <footer className="bg-slate-900 text-slate-300 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1143,7 +1142,7 @@ const Footer = () => {
               <Image src="/ezdihar.png" alt="إزدهار ويب" width={140} height={40} className="h-10 w-auto brightness-0 invert" />
             </div>
             <p className="max-w-xs text-sm opacity-70">
-              أتمتة النمو الرقمي للشركات السعودية. سرعة، توفير، وفعالية.
+              {config.footerTagline}
             </p>
           </div>
           <div>
@@ -1168,13 +1167,43 @@ const Footer = () => {
   );
 };
 
-export default function App() {
+function AppContent() {
+  const { config } = useGeo();
+
+  // Track section views via IntersectionObserver
+  useEffect(() => {
+    const sections = ['packages', 'features', 'portfolio', 'testimonials'];
+    const observed = new Set<string>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !observed.has(entry.target.id)) {
+            observed.add(entry.target.id);
+            trackGAEvent('section_view', {
+              event_category: 'scroll',
+              event_label: entry.target.id,
+            });
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap');`}
       </style>
-      <div dir="rtl" className="font-['Noto_Kufi_Arabic'] antialiased text-slate-900 bg-white selection:bg-[#00CC95] selection:text-white">
+      <div dir="rtl" className="font-['Noto_Kufi_Arabic'] antialiased text-slate-900 bg-white selection:text-white" style={{ ['--selection-bg' as string]: config.accentColor }}>
         <Navbar />
         <Hero />
         <ClientLogos />
@@ -1185,5 +1214,13 @@ export default function App() {
         <ChatWidget />
       </div>
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <GeoProvider>
+      <AppContent />
+    </GeoProvider>
   );
 }
