@@ -38,7 +38,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         flag: '🇸🇦',
         currency: 'ريال',
         currencyCode: 'SAR',
-        price: '1,190',
+        price: '1,990',
         accentColor: '#00CC95',
         accentColorDark: '#00CC6C',
         accentGradient: 'from-[#00CC95] to-[#00CC6C]',
@@ -49,7 +49,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         adCopyDialect: 'باللهجة السعودية واللغة الإنجليزية',
         footerTagline: 'أتمتة النمو الرقمي للشركات السعودية. سرعة، توفير، وفعالية.',
         seoTitle: 'إزدهار ويب | باقة النمو الرقمي المتكاملة في السعودية',
-        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في السعودية. مواقع، متاجر، وإعلانات جوجل - فقط 1,190 ريال شهرياً.',
+        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في السعودية. مواقع، متاجر، وإعلانات جوجل - فقط 1,990 ريال شهرياً.',
         testimonials: [
             {
                 name: "د. أحمد الشمري",
@@ -103,7 +103,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         flag: '🇦🇪',
         currency: 'درهم',
         currencyCode: 'AED',
-        price: '1,190',
+        price: '1,990',
         accentColor: '#0077B6',
         accentColorDark: '#005F8A',
         accentGradient: 'from-[#0077B6] to-[#005F8A]',
@@ -114,7 +114,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         adCopyDialect: 'باللهجة الإماراتية واللغة الإنجليزية',
         footerTagline: 'أتمتة النمو الرقمي للشركات الإماراتية. سرعة، توفير، وفعالية.',
         seoTitle: 'إزدهار ويب | باقة النمو الرقمي المتكاملة في الإمارات',
-        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في الإمارات. مواقع، متاجر، وإعلانات جوجل - فقط 1,190 درهم شهرياً.',
+        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في الإمارات. مواقع، متاجر، وإعلانات جوجل - فقط 1,990 درهم شهرياً.',
         testimonials: [
             {
                 name: "محمد الكعبي",
@@ -168,7 +168,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         flag: '🇶🇦',
         currency: 'ريال',
         currencyCode: 'QAR',
-        price: '1,190',
+        price: '1,990',
         accentColor: '#8B1A4A',
         accentColorDark: '#6B1338',
         accentGradient: 'from-[#8B1A4A] to-[#6B1338]',
@@ -179,7 +179,7 @@ export const COUNTRY_CONFIGS: Record<CountryCode, CountryConfig> = {
         adCopyDialect: 'باللهجة القطرية واللغة الإنجليزية',
         footerTagline: 'أتمتة النمو الرقمي للشركات القطرية. سرعة، توفير، وفعالية.',
         seoTitle: 'إزدهار ويب | باقة النمو الرقمي المتكاملة في قطر',
-        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في قطر. مواقع، متاجر، وإعلانات جوجل - فقط 1,190 ريال قطري شهرياً.',
+        seoDescription: 'خدمات تسويقية احترافية بجودة عالمية وأسعار تنافسية في قطر. مواقع، متاجر، وإعلانات جوجل - فقط 1,990 ريال قطري شهرياً.',
         testimonials: [
             {
                 name: "عبدالله المري",
